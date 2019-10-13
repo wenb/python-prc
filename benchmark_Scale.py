@@ -12,7 +12,6 @@
 import argparse
 import cProfile
 import os
-import sys
 import tempfile
 import time
 import Image

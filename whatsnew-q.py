@@ -33,20 +33,18 @@ def main():
 
 def handle_commandline():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-l", "--limit", type=int, default=0,
-            help="the maximum items per feed [default: unlimited]")
-    parser.add_argument("-c", "--concurrency", type=int,
-            default=multiprocessing.cpu_count() * 4,
-            help="specify the concurrency (for debugging and "
-                "timing) [default: %(default)d]")
+    parser.add_argument(
+        "-l", "--limit", type=int, default=0, help="the maximum items per feed [default: unlimited]")
+    parser.add_argument(
+        "-c", "--concurrency", type=int, default=multiprocessing.cpu_count() * 4,
+        help="specify the concurrency (for debugging and timing) [default: %(default)d]")
     args = parser.parse_args()
     return args.limit, args.concurrency
 
 
 def create_threads(limit, jobs, results, concurrency):
     for _ in range(concurrency):
-        thread = threading.Thread(target=worker, args=(limit, jobs,
-                results))
+        thread = threading.Thread(target=worker, args=(limit, jobs, results))
         thread.daemon = True
         thread.start()
 
@@ -74,16 +72,16 @@ def add_jobs(filename, jobs):
 def process(todo, jobs, results, concurrency):
     canceled = False
     try:
-        jobs.join() # Wait for all the work to be done
-    except KeyboardInterrupt: # May not work on Windows
+        jobs.join()  # Wait for all the work to be done
+    except KeyboardInterrupt:  # May not work on Windows
         Qtrac.report("canceling...")
         canceled = True
     if canceled:
         done = results.qsize()
     else:
         done, filename = output(results)
-    Qtrac.report("read {}/{} feeds using {} threads{}".format(done, todo,
-            concurrency, " [canceled]" if canceled else ""))
+    Qtrac.report(
+        "read {}/{} feeds using {} threads{}".format(done, todo, concurrency, " [canceled]" if canceled else ""))
     print()
     if not canceled:
         webbrowser.open(filename)
@@ -96,7 +94,7 @@ def output(results):
         file.write("<!doctype html>\n")
         file.write("<html><head><title>What's New</title></head>\n")
         file.write("<body><h1>What's New</h1>\n")
-        while not results.empty(): # Safe because all jobs have finished
+        while not results.empty():  # Safe because all jobs have finished
             result = results.get_nowait()
             done += 1
             for item in result:

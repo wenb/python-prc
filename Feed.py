@@ -8,18 +8,17 @@
 # useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
-
+import sysconfig
 import collections
 import re
 import socket
-import sys
 import urllib.request
-if sys.version_info[:2] < (3, 2):
+if sysconfig.get_python_version() < '3.2':
     from xml.sax.saxutils import escape
 else:
     import warnings
-    warnings.simplefilter("ignore", ResourceWarning) # For stdlib socket.py
-    warnings.simplefilter("ignore", DeprecationWarning) # For etree
+    warnings.simplefilter("ignore", ResourceWarning)  # For stdlib socket.py
+    warnings.simplefilter("ignore", DeprecationWarning)  # For etree
     from html import escape
 try:
     import feedparser

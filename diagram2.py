@@ -15,7 +15,7 @@ import tempfile
 
 
 def main():
-    if len(sys.argv) > 1 and sys.argv[1] == "-P": # For regression testing
+    if len(sys.argv) > 1 and sys.argv[1] == "-P":  # For regression testing
         create_diagram(DiagramFactory).save(sys.stdout)
         create_diagram(SvgDiagramFactory).save(sys.stdout)
         return
